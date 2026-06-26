@@ -1,0 +1,57 @@
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("netflix_titles.csv")
+
+print("--- Netflix Advanced Data Loaded Successfully! ---")
+print(f"Total Rows: {df.shape[0]} | Total Columns: {df.shape[1]}")
+
+plt.figure(figsize=(6, 4))
+sns.countplot(x='type', data=df, palette='Set1')
+plt.title('1. Netflix Content Type: Movies vs TV Shows')
+plt.xlabel('Type')
+plt.ylabel('Total Count')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+top_countries = df['country'].value_counts().head(10).index
+sns.countplot(y='country', data=df[df['country'].isin(top_countries)], order=top_countries, palette='viridis')
+plt.title('2. Top 10 Countries Producing Content on Netflix')
+plt.xlabel('Count')
+plt.ylabel('Country')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+top_directors = df['director'].dropna().value_counts().head(10).index
+sns.countplot(y='director', data=df[df['director'].isin(top_directors)], order=top_directors, palette='magma')
+plt.title('3. Top 10 Directors with Most Content on Netflix')
+plt.xlabel('Total Movies/TV Shows')
+plt.ylabel('Director Name')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+all_cast = df['cast'].dropna().str.split(', ').explode()
+top_cast = all_cast.value_counts().head(10)
+sns.barplot(x=top_cast.values, y=top_cast.index, palette='cubehelix')
+plt.title('4. Top 10 Actors/Cast with Most Appearances')
+plt.xlabel('Number of Movies/TV Shows')
+plt.ylabel('Actor Name')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 4))
+movies_df = df[df['type'] == 'Movie'].copy()
+movies_df['duration_min'] = movies_df['duration'].str.replace(' min', '', regex=False)
+movies_df['duration_min'] = pd.to_numeric(movies_df['duration_min'], errors='coerce')
+
+sns.histplot(movies_df['duration_min'].dropna(), bins=30, kde=True, color='purple')
+plt.title('5. Distribution of Movie Durations (Runtime)')
+plt.xlabel('Duration (in Minutes)')
+plt.ylabel('Number of Movies')
+plt.tight_layout()
+plt.show()
