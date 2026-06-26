@@ -1,0 +1,72 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("startup_funding.csv")
+print(df.head())
+   Sr No Date dd/mm/yyyy                  Startup Name    Industry Vertical  \
+0      1      09/01/2020                        BYJU’S               E-Tech   
+1      2      13/01/2020                        Shuttl       Transportation   
+2      3      09/01/2020                     Mamaearth           E-commerce   
+3      4      02/01/2020  https://www.wealthbucket.in/              FinTech   
+4      5      02/01/2020                        Fashor  Fashion and Apparel   
+
+                             SubVertical City  Location  \
+0                             E-learning      Bengaluru   
+1              App based shuttle service        Gurgaon   
+2  Retailer of baby and toddler products      Bengaluru   
+3                      Online Investment      New Delhi   
+4            Embroiled Clothes For Women         Mumbai   
+
+              Investors Name       InvestmentnType Amount in USD Remarks  
+0    Tiger Global Management  Private Equity Round  20,00,00,000     NaN  
+1  Susquehanna Growth Equity              Series C     80,48,394     NaN  
+2      Sequoia Capital India              Series B   1,83,58,860     NaN  
+3             Vinod Khatumal          Pre-series A     30,00,000     NaN  
+4    Sprout Venture Partners            Seed Round     18,00,000     NaN  
+print(df.info())
+print(df.describe())
+<class 'pandas.DataFrame'>
+RangeIndex: 3044 entries, 0 to 3043
+Data columns (total 10 columns):
+ #   Column             Non-Null Count  Dtype
+---  ------             --------------  -----
+ 0   Sr No              3044 non-null   int64
+ 1   Date dd/mm/yyyy    3044 non-null   str  
+ 2   Startup Name       3044 non-null   str  
+ 3   Industry Vertical  2873 non-null   str  
+ 4   SubVertical        2108 non-null   str  
+ 5   City  Location     2864 non-null   str  
+ 6   Investors Name     3020 non-null   str  
+ 7   InvestmentnType    3040 non-null   str  
+ 8   Amount in USD      2084 non-null   str  
+ 9   Remarks            419 non-null    str  
+dtypes: int64(1), str(9)
+memory usage: 237.9 KB
+None
+             Sr No
+count  3044.000000
+mean   1522.500000
+std     878.871435
+min       1.000000
+25%     761.750000
+50%    1522.500000
+75%    2283.250000
+max    3044.000000
+print(df.isnull().sum())
+Sr No                   0
+Date dd/mm/yyyy         0
+Startup Name            0
+Industry Vertical     171
+SubVertical           936
+City  Location        180
+Investors Name         24
+InvestmentnType         4
+Amount in USD         960
+Remarks              2625
+dtype: int64
+plt.figure(figsize=(10, 6))
+sns.countplot(data=df, x='City  Location')
+plt.xticks(rotation=45)
+plt.title('Startup Distribution by City')
+plt.show()
